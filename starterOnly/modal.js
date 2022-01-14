@@ -12,12 +12,26 @@ const modalbg = document.querySelector(".bground");
 const modalBtn = document.querySelectorAll(".modal-btn");
 const formData = document.querySelectorAll(".formData");
 
-// launch modal event
-modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
 
-// launch modal form
-function launchModal() {
+
+// ************ Modal management ************
+// Open modal
+openModal = () => {
   modalbg.style.display = "block";
 }
+
+// Close modal
+closeModal = () => {
+  modalbg.style.display = "none";
+}
+
+
+// launch modal event
+// modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
+
+// launch modal form
+// function launchModal() {
+//   modalbg.style.display = "block";
+// }
 
 
