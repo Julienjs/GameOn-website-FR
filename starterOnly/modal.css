@@ -203,6 +203,25 @@ main {
   margin: 15px auto;
 }
 
+.modal-success {
+  text-align: center;
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 1;
+  font-size: 1.2em;
+}
+
+.modal-success p {
+  margin: auto;
+}
+
+.modal-success span {
+  font-weight: 900;
+}
+
 label {
   font-family: var(--font-default);
   font-size: 17px;
