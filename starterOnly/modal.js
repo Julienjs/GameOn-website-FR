@@ -18,12 +18,17 @@ const form = document.querySelector("form");
 burger.addEventListener("click", () => {
   // Je crée une variable x qui contient l'ID myTopnav
   let x = document.getElementById("myTopnav");
+  let ul = document.querySelector("ul");
   // Condition si dans myTopnav(x) la class est topnav alors au clic tu me rajoutes la class responsive qui va m'ouvrir ma liste
   if (x.className === "topnav") {
-    x.className += " responsive";
+    x.className += "responsive";
+    ul.style.width = "100%";
+    // ul.style.transition = "3s"
     // Sinon la class redeviens topnav ce qui referme le menu
   } else {
     x.className = "topnav";
+    // ul.style.width = "0"
+
   }
 });
 
