@@ -6,6 +6,7 @@ const burger = document.querySelector(".icon");
 const modalbg = document.querySelector(".bground");
 const openModal = document.querySelectorAll(".modal-btn");
 const closeModal = document.querySelector(".close");
+const modalSuccess = document.querySelector(".modal-success");
 
 // ****** Form ******
 const formData = document.querySelectorAll(".formData");
@@ -23,7 +24,6 @@ burger.addEventListener("click", () => {
   if (x.className === "topnav") {
     x.className += "responsive";
     ul.style.width = "100%";
-    // ul.style.transition = "3s"
     // Sinon la class redeviens topnav ce qui referme le menu
   } else {
     x.className = "topnav";
@@ -61,12 +61,12 @@ closeModal.addEventListener("click", () => {
 
 // ****** Open succes modal ******
 // Fonction pour remplacer le contenu de la modal inscription
-successModal = () => {
+successModal = (user) => {
   // Récupération des valeur envoyé dans le localstorage
-  const firstName = localStorage.getItem('Prénom');
-  const LastName = localStorage.getItem('Nom');
-  const email = localStorage.getItem('Email');
-  const City = localStorage.getItem('Ville');
+  const firstName = user.firstname;
+  const LastName = user.lastname;
+  const email = user.email;
+  const City = user.city;
   // Récupération dans le dom de la classe content pour la mettre en display none
   const content = document.querySelector(".content");
   content.style.display = "none";
@@ -110,11 +110,11 @@ validFirstname = () => {
   const testFirstName = nameRegExp.test(firstValue);
   // Si le tableau de la valeur est supérieur ou égale à 2 et 
   // Que la correspondance entre ma regexp et la valeur est ok 
-  // Alors je retourne la valeur entrée
+  // Alors je retourne true
   if (firstValue.length >= 2 && testFirstName) {
     formData[0].setAttribute("data-error-visible", false);
     formData[0].setAttribute("data-success-visible", true);
-    return firstValue
+    return true
     // Sinon si testFirstName est false il renvoi false
   } else if (!testFirstName) {
     // Si firstValue est vide il envoi un message correspondant à l'erreur 
@@ -154,7 +154,7 @@ validLastname = () => {
   if (lastValue.length >= 2 && testLastName) {
     formData[1].setAttribute("data-error-visible", false);
     formData[1].setAttribute("data-success-visible", true);
-    return lastValue
+    return true
     // Sinon si testLastName est false il renvoi false
   } else if (!testLastName) {
     // Si lastValue est vide il envoi un message correspondant à l'erreur 
@@ -198,7 +198,7 @@ validEmail = () => {
   if (testEmail) {
     formData[2].setAttribute("data-error-visible", false);
     formData[2].setAttribute("data-success-visible", true);
-    return emailValue
+    return true
     // Sinon si testEmail est false il renvoi false
   } else if (!testEmail) {
     // Si emailValue est vide il envoi un message d'erreur correspondant à l'erreur
@@ -273,7 +273,7 @@ validBirthdate = () => {
     formData[3].setAttribute("data-error-visible", false);
     formData[3].setAttribute("data-success-visible", true);
     console.log(birthdate.value);
-    return birthdate.value
+    return true
   }
 };
 
@@ -294,7 +294,7 @@ validQuantity = () => {
   } else {
     formData[4].setAttribute("data-error-visible", false);
     formData[4].setAttribute("data-success-visible", true);
-    return quantityValue
+    return true
   }
 };
 
@@ -309,7 +309,7 @@ validLocation = () => {
     if (location.checked) {
       formData[5].setAttribute("data-error-visible", false);
       choice = location.value;
-      return choice;
+      return true;
       // Sinon il retourne rien
     } else {
       formData[5].setAttribute("data-error-visible", true);
@@ -340,26 +340,26 @@ validCondition = () => {
 // Au clic sur le input de type submit les conditions seront vérifié
 form.addEventListener("submit", (e) => {
   e.preventDefault();
-  // Si toutes les fonctions envoi la réponse return bien leur valeur alors le formulaire seras envoyé 
-  // Et les données seront envoyés dans le localstorage
-  // Ensuite la modal de confirmation s'ouvriras
+  const form = new FormData(e.target)
+  const user = {
+    firstname: form.get("first"),
+    lastname: form.get("last"),
+    city: form.get("location"),
+    email: form.get("email"),
+  }
+  // Si toutes les fonctions envoi la réponse return bien true alors le formulaire seras envoyé 
+  // Ensuite la modal de confirmation s'ouvrira avec les valeurs entrées par l'utilisateur 
   if (
+
     validFirstname() &&
-    validLastname() &&
-    validEmail() &&
-    validBirthdate() &&
-    validQuantity() &&
+    // validLastname() &&
+    // validEmail() &&
+    // validBirthdate() &&
+    // validQuantity() &&
     validLocation() &&
     validCondition()
   ) {
-    localStorage.setItem('Prénom', validFirstname());
-    localStorage.setItem('Nom', validLastname());
-    localStorage.setItem('Email', validEmail());
-    localStorage.setItem('Date de naissance', validBirthdate());
-    localStorage.setItem('Nombre de tournois', validQuantity());
-    localStorage.setItem('Ville', validLocation());
-    localStorage.setItem('Condition accépté', validCondition());
-    successModal()
+    successModal(user)
   }
 });
 
