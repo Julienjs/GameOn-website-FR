@@ -40,6 +40,8 @@ burger.addEventListener("click", () => {
 // Je crée un évenement au clic sur les deux boutons
 // Au clic la fonction se déclencheras et la modal passera en display block ce qui afficheras la modal
 openModal.forEach((btn) => btn.addEventListener("click", () => {
+  // Efface le formulaire lors de l'ouverture 
+  form.reset()
   modalbg.style.display = "block";
 }));
 
@@ -50,8 +52,6 @@ openModal.forEach((btn) => btn.addEventListener("click", () => {
 // Au clic la fonction se déclencheras et la modal passera en display none ce qui fermeras la modal
 closeModal.addEventListener("click", () => {
   modalbg.style.display = "none";
-  // Efface le formulaire lors de la fermeture 
-  form.reset();
   // Boucle sur formData pour remettre les messages d'erreurs sur false
   formData.forEach((formdata) => {
     formdata.setAttribute("data-error-visible", false);
@@ -64,9 +64,9 @@ closeModal.addEventListener("click", () => {
 successModal = (user) => {
   // Récupération des valeur envoyé dans le localstorage
   const firstName = user.firstname;
-  const LastName = user.lastname;
+  const lastName = user.lastname;
   const email = user.email;
-  const City = user.city;
+  const location = user.location;
   // Récupération dans le dom de la classe content pour la mettre en display none
   const content = document.querySelector(".content");
   content.style.display = "none";
@@ -77,9 +77,9 @@ successModal = (user) => {
      <span class="close" onclick=CloseSuccess()></span>
       <div class="modal-body modal-success">
         <p>
-           Merci <span>${firstName} ${LastName}</span> pour
+           Merci <span>${firstName} ${lastName}</span> pour
            <br>votre inscription. <br>
-           Le tournoi se déroulera donc à <span>${City}</span>.   
+           Le tournoi se déroulera donc à <span>${location}</span>.   
            <br>Un mail de confirmation vous a été envoyez à l'adresse <span>${email}</span>
        </p>
        <button class="btn-signup modal-btn" onclick=CloseSuccess()>
@@ -94,12 +94,12 @@ successModal = (user) => {
 // Fonction qui va fermer la modal success et qui va recharger la page pour que la modal redevienne la modal inscription
 CloseSuccess = () => {
   modalbg.style.display = "none";
-  window.location.reload();
-}
+  location.reload()
+};
 
 // *********************************************** Form management ********************************************
 const nameRegExp = new RegExp(
-  '^[A-Z][A-Za-z\é\è\ê\ë-]+$',
+  '^[A-Z][A-Za-z\é\è\ê\ë\'-]+$',
 );
 
 // ****** Firstname control ******
@@ -301,14 +301,11 @@ validQuantity = () => {
 // ****** Location control ****** 
 validLocation = () => {
   const inpLocation = document.getElementsByName("location");
-  // Variable avec une valeur undefined
-  let choice;
   // Boucle sur les inpLocation nommé location
   for (let location of inpLocation) {
     // Condition si location est checked il retourne la valeur séléctionné
     if (location.checked) {
       formData[5].setAttribute("data-error-visible", false);
-      choice = location.value;
       return true;
       // Sinon il retourne rien
     } else {
@@ -344,18 +341,17 @@ form.addEventListener("submit", (e) => {
   const user = {
     firstname: form.get("first"),
     lastname: form.get("last"),
-    city: form.get("location"),
+    location: form.get("location"),
     email: form.get("email"),
   }
   // Si toutes les fonctions envoi la réponse return bien true alors le formulaire seras envoyé 
   // Ensuite la modal de confirmation s'ouvrira avec les valeurs entrées par l'utilisateur 
   if (
-
     validFirstname() &&
-    // validLastname() &&
-    // validEmail() &&
-    // validBirthdate() &&
-    // validQuantity() &&
+    validLastname() &&
+    validEmail() &&
+    validBirthdate() &&
+    validQuantity() &&
     validLocation() &&
     validCondition()
   ) {
