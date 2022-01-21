@@ -139,7 +139,7 @@ validFirstname = () => {
     else if (firstValue !== '' && firstValue.length >= 2 && firstValue[0] === firstValue[0].toUpperCase()) {
       formData[0].setAttribute("data-success-visible", false);
       formData[0].setAttribute("data-error-visible", true);
-      formData[0].setAttribute("data-error", `Votre prénom ne doit contenir de chiffre ni de symbole`);
+      formData[0].setAttribute("data-error", `Votre prénom ne doit pas contenir de chiffre ni de symbole`);
     }
     return false
   }
@@ -179,7 +179,7 @@ validLastname = () => {
     else if (lastValue !== '' && lastValue.length >= 2 && lastValue[0] === lastValue[0].toUpperCase()) {
       formData[1].setAttribute("data-success-visible", false);
       formData[1].setAttribute("data-error-visible", true);
-      formData[1].setAttribute("data-error", `Votre nom ne doit contenir de chiffre ni de symbole`);
+      formData[1].setAttribute("data-error", `Votre nom ne doit pas contenir de chiffre ni de symbole`);
     }
     return false
   }
@@ -343,7 +343,7 @@ form.addEventListener("submit", (e) => {
     lastname: form.get("last"),
     location: form.get("location"),
     email: form.get("email"),
-  }
+  };
   // Si toutes les fonctions envoi la réponse return bien true alors le formulaire seras envoyé 
   // Ensuite la modal de confirmation s'ouvrira avec les valeurs entrées par l'utilisateur 
   if (
